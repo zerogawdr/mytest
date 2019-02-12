@@ -1,0 +1,42 @@
+touch  index.html  创建文件
+
+git init  初始化本地仓库
+
+git config --global user.name 'XX'全局设置使用者的名字
+git config --global user.email 'XX'全局设置使用者的邮箱
+
+git add  XXX  添加文件到上传队列   git add *.html  表示吧后缀为html的文件都上传到列队 git add .  表示上传所有未上传的文件
+ 
+ git status  查看当前上传队列的状态  绿色的表示通过git add上传到队列了 红色表示还没上传
+
+$ git rm --cached index.html  删除上传列队的文件
+g
+git commit 提交上传列队 然后进入一个界面备注信息 后按ESC 之后输入  :wq退出保存（快捷方式是git commit -m '描述内容'）
+
+
+//忽略方法 主线以及分支方法 合并
+在主目录下创建一个文件"log.txt" 当作想忽略的文件
+touch .gitignore 会创建一个.gitignore的文件打开可以在里面填写想忽略的文件 想忽略文件夹就放文件夹的相对地址
+
+创建分支
+git branch 分支名("login")  创建分支
+
+git checkout 分支名("login")  进入分支 进入后可以用touch XXX 添加自己需要的文件
+
+git checkout master 进入主线  master名字是固定的 不能更改
+
+ 在进入主线的情况下 输入   git merge 分支名（"login"） 可以把分支和主线合并起来
+    （好处：用git branch 分支名("login") 进入分支后 所做的一切都能正常操作，git checkout master进入主线后 分支的操作会被隐藏，不会影响到主线）等到支线功能做完测试好后通过命令 在和主线合并
+
+//远程仓库的对接
+
+git remote 查看对应的地址
+git remote add origin https://github.com/zerogawdr/homework1.git（可当前的仓库进行对接）
+ git push -u origin master
+
+touch README.md(对当前项目的说明文件) 可以在里面输入（#myapp this is git）md语法
+
+提交完未上传的文件完毕后 使用git push 就可以把本地仓库的东西推送到远程仓库上了
+
+//特别仓库的创建方法（可以托管到github个人网站）
+创建新项目名字要用（zerogawdr.github.io） 前面的zerogawdr（所有者）+github.io
