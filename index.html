@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="/js/vue.js"></script>
+    <title>Document</title>
+    <style>
+    #app{
+        width: 100vw;
+        height: 100vh;
+       
+      
+    }
+
+    </style>
+</head>
+<body>
+    <div id="app" v-bind:style="`background:rgba(0,0,0,${change/100})`">
+        <h1>{{ title}}</h1>
+        <input type="text"v-model="title" >
+        <ul v-for='item in items'>
+            <li>{{item.name}}<br/>{{item.age}}</li>
+        </ul>
+        <input type="range" v-model='change'>
+        <span>{{change}}</span>
+        <hr>
+        <ul v-for="(tab,index) in tabs">
+            <li > 
+                <span>{{tab.tab}}</span>
+                <span v-show:class="fa">{{tab.contents}}</span>
+            </li>
+        </ul>
+    </div>
+
+    <script>
+    
+    new Vue({
+        el:'#app',
+        data:{
+            title:'hello world',
+            change:0,
+            fa:false,
+            items:[
+                {name:'陈旭',age:24},
+                {name:'顽石',age:18}
+            ],
+            tabs:[
+                {tab:'标题一',contents:'标题一内容'},
+                {tab:'标题二',contents:'标题二内容'},
+                {tab:'标题三',contents:'标题三内容'}
+            ]
+        }
+    })
+    </script>
+</body>
+</html>
