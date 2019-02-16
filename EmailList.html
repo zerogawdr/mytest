@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .input{
+            width: 200px;
+            height: 35px;
+            position: absolute;
+            border: 1px solid #dddddd;
+        }
+        .input input{
+            width: inherit;
+            height: inherit;
+            
+        }
+        .input ul{
+            list-style: none;
+            padding: 0;
+            width: inherit;
+            border: 1px solid #dddddd;
+            border-bottom: 1px solid #dddddd;
+        }
+        .input ul li {
+            height: 30px;
+            line-height: 30px;
+            border-bottom: 1px solid #dddddd;
+
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app">
+        <div class="input">
+            <input type="text" v-model="value">
+            <ul v-if="eaillist &&eaillist.length>0">
+                <li v-for=" item in eaillist" @click="select(item)">{{item}}</li>
+            </ul>
+        </div>
+    </div>
+    <script src="/js/vue.js"></script>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                value:""
+            },
+            computed: {
+                eaillist(){
+                    if(/@/.test(this.value)) return []
+                    return [
+                        this.value+"@qq.com",
+                        this.value+ "@163.com",
+                        this.value+"@gamil.com",
+                        this.value+"@live.comm"
+                    ]
+                }
+            },
+            methods: {
+                select(item){
+                    this.value=item;
+                }
+            },
+        })
+
+    </script>
+</body>
+</html>
