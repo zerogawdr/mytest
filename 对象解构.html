@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+        //对象结构
+            // const obj={name:'张三',age:25}
+            // // console.log(obj.name)
+            // const {name,age}=obj;
+            // console.log(obj.name)
+
+        //结构赋值
+        // const obj={name:'张三',age:25}
+        // // console.log(obj.name)
+        // const {name,age,job='ccc'}=obj
+        // console.log(job)
+        const str='http://www.baidu.com:3000';
+        const a=str.split(':')
+        console.log(a)
+        // const arr=["http","//www.baidu.com","3000"];
+        //完全按照数组的顺序去解构的
+        // ...在数组解构时候 代表去剩下部分的 以数组形式储存
+        const [b,...more]=a;
+        // console.log(protocol,host,port)
+        console.log(b,more)
+
+
+    </script>
+</body>
+</html>
