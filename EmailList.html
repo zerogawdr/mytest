@@ -6,63 +6,40 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
     <style>
-        .input{
-            width: 200px;
-            height: 35px;
-            position: absolute;
-            border: 1px solid #dddddd;
-        }
-        .input input{
-            width: inherit;
-            height: inherit;
-            
-        }
-        .input ul{
-            list-style: none;
-            padding: 0;
-            width: inherit;
-            border: 1px solid #dddddd;
-            border-bottom: 1px solid #dddddd;
-        }
-        .input ul li {
-            height: 30px;
-            line-height: 30px;
-            border-bottom: 1px solid #dddddd;
-
-        }
+      
     </style>
 </head>
 <body>
 
     <div id="app">
-        <div class="input">
-            <input type="text" v-model="value">
-            <ul v-if="eaillist &&eaillist.length>0">
-                <li v-for=" item in eaillist" @click="select(item)">{{item}}</li>
-            </ul>
+        <div class="box" @click.capture="click('父元素')">
+            <button @click="click('子元素')">按钮</button>
         </div>
+        <!-- <input type="text" value="XXX"  @keydown.prevent="input"> -->
+        <!-- <input type="text" value="XXX"  @keydown.enter="input('1')"> 按下enter会触发事件 -->
+        <!-- <input type="text" value="XXX"  @keydown.enter.a="input('1')">按下enter/a/b都会触发事件 -->
+        <!-- 数组不能直接加 需要用键盘码 -->
+        <!-- 
+            常用的按键别名
+            enter tab  delete esc space up down left right
+         -->
+         <!-- 
+             系统修饰符
+             ctrl alt shift  meta
+          -->
+         <!-- <input type="text" value="XXX"  @keydown="input('1')"> -->
+         <input type="text" value="XXX"  @click.ctrl.exact="input('1')">
     </div>
     <script src="/js/vue.js"></script>
     <script>
         new Vue({
             el:"#app",
-            data:{
-                value:""
-            },
-            computed: {
-                eaillist(){
-                    if(/@/.test(this.value)) return []
-                    return [
-                        this.value+"@qq.com",
-                        this.value+ "@163.com",
-                        this.value+"@gamil.com",
-                        this.value+"@live.comm"
-                    ]
-                }
-            },
             methods: {
-                select(item){
-                    this.value=item;
+                click(e){
+                    console.log(e)
+                },
+                input(e){
+                    console.log(e)
                 }
             },
         })
