@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="./js/vue.js"></script>
+    <title>Document</title>
+    <style>
+        body{
+            margin: 0;
+            box-sizing: border-box;
+           
+        }
+        #app{
+           margin: 0 auto
+        }
+        ul{
+            list-style:none;
+            
+        }
+        li{
+            float: left;
+            padding: 3px 10px;
+            border: 1px solid black;
+            margin-left: 3px;
+        }
+        a{
+            text-decoration:none;
+            color: black;
+            cursor: pointer;     
+        }
+        li:hover{
+            background: pink;
+        }
+        .clearfix::after{
+            content: "";
+            clear: both;
+            overflow: hidden;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <ul class="clearfix">
+            <li v-for="(NavSelect,index) in  NavList"><a href="#" @click="NavClick(index)">{{NavSelect.NavName}}</a></li>    
+        </ul>
+        <div style="margin-left: 100px" v-for='(NavSelect,index) in  NavList' v-if="NavSelect.show"><span>{{NavSelect.title}}</span></div>
+    </div>
+    <script>
+    new Vue({
+        el:'#app',
+        data:{
+            NavList:[
+                {NavName:'标题一',title:'标题一的内容',show:true},
+                {NavName:'标题二',title:'标题二的内容',show:false},
+                {NavName:'标题三',title:'标题三的内容',show:false},
+
+            ]
+        },
+        methods: {
+            NavClick(index){
+                for(let i=0;i<this.NavList.length;i++){
+                    this.NavList[i].show=false;
+                };
+                this.NavList[index].show=true;
+            }
+        },
+    })
+    </script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <title>Document</title>
+</head>
+<style>
+    .transfer{
+        display: flex;
+        justify-content: space-between;
+    }
+    .transfer .left,
+    .transfer .right{
+        width: 300px;
+    }
+    .transfer .middle{
+        flex: 1;
+        display: flex;
+        flex-direction:column; 
+        justify-content: center;
+    }
+    .transfer .middle button{
+        width: 100px;
+    }
+</style>
+<body>
+
+    <div id="app">
+
+    </div>
+    <script>
+        Vue.component('Transfer',{
+            props:{
+                data1:Array,
+                data2:Array
+            },
+            template:`
+                <div class="transfer">
+                    <div class="left">
+                        全选<input type="checkbox" v-model="selcetAll1" />
+                        <ul>
+                            <li v-for="item in arr1">
+                                <input type="checkbox" v-model="item.checked" />
+                                {{item.title}}
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="middle">
+                        <button :disabled="btn1" @click="handleMoveToRight">右移</button>
+                        <button :disabled="btn2" @click="handleMoveToLeft">左移</button>
+                    </div>
+                    <div class="right">
+                        全选 <input type="checkbox" v-model="selcetAll2" />
+                        <ul>
+                            <li v-for="item in arr2">
+                                <input type="checkbox" v-model="item.checked" />
+                                {{item.title}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            `,
+            data(){
+                return{
+                    selcetAll1:false,
+                    selcetAll2:false,
+                    btn1:true,
+                    btn2:true,
+                    arr1:this.data1,
+                    arr2:this.data2
+                }
+            },
+            watch: {
+                selcetAll1(val){
+                    this.arr1.forEach((item)=>{
+                        item.checked=val
+                    })
+                },
+                selcetAll2(val){
+                    this.arr2.forEach((item)=>{
+                        item.checked=val
+                    })
+                },
+               arr1:{
+                   handler(val){
+                       if(this.arr1.find((item)=>item.checked)){
+                            this.btn1=false;
+                       }else{
+                        this.btn1=true;
+                       }
+                   },
+                   deep:true
+               },
+               arr2:{
+                   handler(val){
+                       if(this.arr2.find((item)=>item.checked)){
+                        this.btn2=false;
+                       }else{
+                        this.btn2=true;
+                       }
+                   },
+                   deep:true
+               }
+            },
+            methods: {
+                handleMoveToRight(){
+                    //选中的
+                    const matchs=JSON.parse(JSON.stringify(this.arr1.filter((item)=>item.checked)));
+                    //生成一个新的数组 每个成员额 checked 改变成了false
+                    //剩下的
+                    const filters=this.arr1.filter((item)=>!item.checked);
+                    this.arr1=filters;
+                    this.arr2.push(...matchs.map((item)=>{
+                        item.checked=false;
+                        return  item
+                    }))
+                    this.selcetAll1=false;
+                    
+                },
+                handleMoveToLeft(){
+                     //选中的
+                     const matchs=JSON.parse(JSON.stringify(this.arr2.filter((item)=>item.checked)));
+                     //剩下的
+                    const filters=this.arr2.filter((item)=>!item.checked);
+                    this.arr2=filters;
+                    this.arr1.push(...matchs.map((item)=>{
+                        item.checked=false;
+                        return  item
+                    }))
+                    this.selcetAll2=false;
+                }
+            },
+        })
+
+        new Vue({
+            el:"#app",
+            template:`
+            <div id="app">
+                <Transfer :data1="data1"  :data2="data2"/>
+            </div>
+            `,
+            data:{
+                data1:[
+                        {
+                            checked:false,
+                            title:'value1'
+                        },
+                        {
+                            checked:false,
+                            title:'value2'
+                        },
+                        {
+                            checked:false,
+                            title:'value3'
+                        },
+                        {
+                            checked:false,
+                            title:'value4'
+                        }
+                ],
+                data2:[
+                        {
+                            checked:false,
+                            title:'value5'
+                        },
+                        {
+                            checked:false,
+                            title:'value6'
+                        },
+                        {
+                            checked:false,
+                            title:'value7'
+                        },
+                        {
+                            checked:false,
+                            title:'value8'
+                        }
+                     ]   
+            }
+        })
+    </script>
+</body>
+</html>

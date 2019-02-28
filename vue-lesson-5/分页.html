@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.0/css/bootstrap.css" rel="stylesheet"> 
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+  
+            
+    <div id="app">
+
+
+    </div>
+
+    <script>
+        Vue.component('Page',{
+            props:{
+                total:Number,
+                size:{
+                    type:Number,
+                    default:10
+                },
+                current:{
+                    type:Number,
+                    default:1
+                }
+        
+            },
+            computed: {
+                pages(){
+                    return this.total/this.size
+                },
+                befor(){
+                    if(this.iCurrent){
+                        return this.iCurrent+2
+                    }
+                }
+            },
+            data(){
+                return{
+                    iCurrent:this.current
+                }
+            },
+            watch: {
+                current(val){
+                    this.iCurrent=val
+                },
+                iCurrent(val){
+                    if(val<1) this.iCurrent=1;
+                    if(val>this.pages) this.iCurrent=this.pages;
+                    this.$emit('update:current',this.iCurrent)
+                }
+            },
+            template:`
+                 <nav >
+                    <ul class="pagination">
+                      <li>
+                        <a href="#" @click="iCurrent--" >
+                          <span >&laquo;</span>
+                        </a>
+                      </li>
+                      <li :class="{active:iCurrent === (index+1)}"
+                       v-for="(item,index) in befor"
+                       @click="iCurrent=index+1"
+                       ><a href="#">{{index+1}}</a></li>
+                      
+                      <li>
+                        <a href="#" @click="iCurrent++" >
+                          <span >&raquo;</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </nav>
+            `
+        })
+
+        new Vue({
+            el:'#app',
+            template:`
+               <div class="app">
+                    <Page  :total="total" :current.sync="current"/>
+                {{current}}
+
+                <input type="number" v-model.number="current"/>
+               </div>
+            `,
+            data(){
+                return{
+                    total:100,
+                    current:2
+                }
+            }
+
+        })
+    </script>
+</body>
+</html>

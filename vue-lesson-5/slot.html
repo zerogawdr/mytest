@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+        <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+        <style>
+            .card{
+                width: 500px;
+                height: 350px;
+                border-radius: 10px;
+                border: 1px solid #000000;
+
+            }
+            .card header{
+                height: 35px;
+                border-bottom: 1px solid #000000;
+                display: flex;
+                justify-content:space-between;
+                padding: 0 10px;
+                line-height: 35px;
+            }
+            
+        </style>
+
+</head>
+<body>
+    <div id="app">
+
+    </div>
+
+    <script>
+     Vue.component('Test',{
+         template:`
+            <div class="test">
+                <slot />
+            </div>
+         `
+     })
+
+     Vue.component('Card',{
+
+         props:{
+            title:{
+                type:String,
+                default:'默认标题'
+            }
+         },
+         template:`
+            <div class="card" >
+
+            <header>
+               {{title}} 
+               <slot name="header" />
+               
+            </header>
+            <main>
+                 <slot/>
+            </main>
+            </div>
+         `
+     })
+     new Vue({
+         el:"#app",
+         template:`
+           <div class="app">
+           
+            <Card  title="自定义标题">
+                <template slot="header">
+                
+                    <span>title</span>
+                    <button>确定</button>
+                </template>
+               
+                
+             </Card>
+           </div>
+         `
+     })
+    </script>
+</body>
+</html>

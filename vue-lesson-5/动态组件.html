@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+
+    </div>
+
+    <script>
+
+        Vue.component('Home',{
+            data(){
+                return{
+                    username: 123
+                }
+            },
+            template:`
+                <div>Home           
+                        <input v-model="username" />
+                </div>
+            `
+        })
+        Vue.component('Test',{
+            template:`
+                <div>Test
+                        <input  />
+
+                </div>
+                
+            `
+        })
+        Vue.component('Admin',{
+            template:`
+                <div>Admin
+                <input />
+                </div>
+            `
+        })
+    new Vue({
+        el:"#app",
+        template:`
+            <div class="app">
+            <button  @click="click(item)"  v-for="item in arr">{{item}}</button>{{active}}
+           
+            <keep-alive>
+            <component :is="active" />
+            </keep-alive>
+            </div>
+        `,
+        data(){
+            return {
+
+                    arr:[
+                        "Home",
+                        "Test",
+                        "Admin"
+                    ],
+                    active:'Home'
+            }
+            
+        },
+        methods: {
+            click(item){
+                this.active=item
+            }
+        },
+    })
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <title>Document</title>
+    <style>
+        .input{
+            width: 200px;
+            height: 35px;
+            position: relative;
+            border: 1px solid #dddddd;
+        }
+        .input input{
+            width: inherit;
+            height: inherit;
+        }
+        .input ul{
+            list-style: none;
+            padding: 0;
+            width: inherit;
+            border: 1px solid #dddddd;
+            border-bottom: none;
+        }
+        .input ul li{
+            height: 30px;
+            line-height: 30px;
+            border-bottom: 1px solid #dddddd;
+        }
+        .input ul li.active{
+            background: #cccccc;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="app">
+       <div class="input">
+            <input type="text" v-model="value" @keydown.enter="enter" @keydown.up.prevent="up" @keydown.down.prevent="down">
+        <ul v-if="value && emailList.length>0 ">
+            <li v-for="(item,index) in emailList" @click="select(item)" :class="{active:index===selectIndex}">{{item}} </li>
+        </ul>
+ 
+
+        <input type="text" v-model="emalType">
+        <button @click='emalTypes.push(emalType),emalType=""'>添加邮箱类型</button> 
+      
+    </div>   
+    </div>
+    <script>
+    new Vue({
+        el:"#app",
+        data:{
+            value:"xxx",
+            emalType:'',
+            emalTypes:['@qq.com','@163.com','@live.com','@game.com'],
+            selectIndex:0
+         
+        },
+        computed:{
+            emailList(){
+                if(/@/.test(this.value)||this.value=="") return [];
+                const arr=[];
+                for(let index in this.emalTypes){
+                    arr[index]=this.value+this.emalTypes[index]
+                }
+                // return arr
+                return arr
+                // return [
+                //    this.value+ '@qq.com',
+                //    this.value + '@163.com',
+                //    this.value +'@live.com',
+                //    this.value +'@game.com'
+                // ]
+            },
+            
+        },
+        methods: {
+            select(item){
+                this.value=item
+            },
+            up(){
+                this.selectIndex--;
+            },
+            down(){
+                this.selectIndex++;
+            },
+            enter(){
+                if(this.emailList.length===0  ) return
+                this.value=this.emailList[this.selectIndex]
+            }
+           
+        },
+        watch: {
+            selectIndex(newval,oldval){
+                if(newval<0) this.selectIndex=this.emalTypes.length-1;
+                if(newval>this.emalTypes.length-1)  this.selectIndex=0;
+            }
+        },
+    })
+    </script>
+</body>
+</html>

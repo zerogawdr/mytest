@@ -28,7 +28,7 @@
         <hr>
         <ul v-for="(tab,index) in tabs">
             <li > 
-                <span>{{tab.tab}}</span>
+                <span v-on:click="fn">{{tab.tab}}</span>
                 <span v-show:class="fa">{{tab.contents}}</span>
             </li>
         </ul>
@@ -51,7 +51,12 @@
                 {tab:'标题二',contents:'标题二内容'},
                 {tab:'标题三',contents:'标题三内容'}
             ]
-        }
+        },
+        methods: {
+            fn(){
+                
+            }
+        },
     })
     </script>
 </body>

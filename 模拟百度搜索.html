@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="/js/vue.js"></script>
+  <title>Vue</title>
+	<style>
+	body{
+		background: #333333;
+	}
+	#app{
+		width: 600px;
+		min-height:550px;
+		margin: 50px auto;
+		background: #A9A9A9;
+		padding: 20px;
+		position: relative;
+	}
+	input{
+		width: 300px;
+		border: 1px solid #A9A9A9;
+		outline: none;
+		height: 30px;
+		margin-bottom: 10px;
+		text-indent: 10px;
+	}
+	ul{
+		width: 298px;
+		height: 495px;
+		border: 1px solid #DDDDDD;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+	}
+	li{
+		list-style: none;
+		width: 298px;
+		height: 30px;
+		line-height: 30px;
+		border-bottom: 1px solid #DDDDDD;
+		margin: 0;
+		padding: 0;
+		text-indent: 15px;
+	}
+	button{
+		width: 298px;
+		height: 30px;
+		margin-bottom: 10px;
+		text-align:center
+	}
+	.left{
+		width: 295px;
+		float: left;
+	}
+	.right{
+		width: 295px;
+		float: left;
+		margin-left: 10px;
+	}
+	.active{
+		background: orangered;
+	}
+	</style>
+</head>
+<body>
+  <div id="app">
+	  <div class="left">
+		<input type="search" placeholder="请输入搜索内容" v-model='search'  @keyDown='keyUpChangeState'/>
+		<ul>
+			<li v-for='(item,index) of list' @click.once='changeValue(index)' :class="selectIndex===index?'active':''">{{item}}</li>
+		</ul>
+		</div>
+		<div class="right">
+			<button  @click.once='getData'>搜索前请先点击获取模拟数据</button>
+			<ul>
+				<li v-for='item of news'>{{item}}</li>
+			</ul>
+		</div>
+    </div>
+
+<script type="text/javascript">
+  new Vue({
+	  el:'#app',
+	  data:{
+		  search:'',
+		  news:[],
+			selectIndex:0,
+		},
+		methods:{
+			getData(){
+				fetch('baidu.json')
+					.then(res=>res.json())
+					.then(data=>{
+						const {titles}=data
+						const {title1}=titles
+						return title1.map((item)=>{
+							return this.news.push(item.title)
+						})
+					})
+					.catch(err=>console.log(err))
+				},
+				keyUpChangeState(e){
+					if(e.keyCode===38){
+						console.log(38);
+						this.search=this.list[this.selectIndex];
+						this.selectIndex++;
+					}
+				},
+				changeValue(index){
+					this.search=this.news[index];
+					this.selectIndex=index;
+					console.log(index)
+				}
+		},
+		computed:{
+			list:function(e){
+				var datas=[];
+				if(this.search!=''){
+					for(var i=0;i<this.news.length;i++){
+						if(this.news[i].search(this.search)!=-1){
+							datas.push(this.news[i]);
+						}
+					}
+				}
+				return datas;
+			}
+		}
+	})
+</script>
+</body>
+</html>

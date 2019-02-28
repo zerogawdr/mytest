@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{getValue()}}
+        <input type="text" v-model="value">{{value}}
+    </div>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                value:"",
+                title:""
+            },
+            watch: {
+                //用来监控当前实例中的成员发生的变化
+                //给当前示例的成员添加一个同名函数在watch选项里
+                //就可以坚挺成员的变化
+                value(newval,oldval){
+                    // console.log(newval,oldval)
+                    //不想让里面有数字
+                    if(/\d/g.test(newval)){
+                        // console.log(1)
+                        this.value=newval.replace(/\d/g,"")
+                    }
+                },
+                title(){
+
+                }
+            },
+            computed: {
+                
+            },
+            methods: {
+                getValue(){
+                    return this.title='@'+this.value
+                }
+            },
+
+        })
+    </script>
+</body>
+</html>

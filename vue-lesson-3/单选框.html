@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        {{sex}}
+        <input type="radio" v-model="sex" value="男">
+        <input type="radio" v-model="sex" value="女">
+
+        <select v-model="selected" >
+            <option  disabled value="">请选择</option>
+            <option value="武汉">武汉</option>
+            <option value="十堰">十堰</option>
+            <option value="苏州">苏州</option>
+        </select>
+        <span>{{selected}}</span>
+
+        <input type="text" v-model.lazy="value">
+        {{value}}
+    </div>
+    <script>
+        new Vue({
+            el:"#app",
+            data:{
+                sex:'男',
+                selected:"",
+                value:""
+            }
+        })
+    </script>
+</body>
+</html>

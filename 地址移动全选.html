@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <title>穿梭框</title>
+  <style type="text/css">
+    .div{
+      width: 300px;
+      height: 200px;
+      float: left;
+    }
+    .div ul li{
+      list-style: none;
+      line-height: 30px
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+
+</div>
+<script>
+	Vue.component('Transfer',{
+    props:{
+      leftList: Array,
+      rightList: Array
+    },
+    template:`
+      <div>
+      <div class='div'>
+        <input type='checkbox' v-model='checkAllLeft'/> <span>全选</span>
+        <ul>
+          <li v-for='(left,index) of arrleft'><input type="checkbox" v-model='left.checked'/> {{left.title}}</li>
+        </ul>
+      </div>
+      <div class='div'>
+          <button @click='moveButton' :disabled="topState">右移</button><button @click='moveTop' :disabled="bottomState">左移</button><br />
+      </div>
+        <div class='div'>
+          <input type='checkbox'v-model='checkAllRight'/> <span>全选</span>
+          <ul>
+            <li v-for='(right,index) of arrRight'><input type="checkbox" v-model='right.checked'/>{{right.title}}</li>
+          </ul>
+        </div>
+      </div>
+    `,
+    data(){
+      return{
+        arrleft:this.leftList,
+        arrRight:this.rightList,
+        checkAllLeft:false,
+        checkAllRight:false,
+      }
+    },
+    methods:{
+      moveButton(){
+        const left=this.arrleft.filter(item=>item.checked)
+        const leftRemain=this.arrleft.filter(item=>!item.checked)
+        this.arrRight.push(...left.map(item=>{
+          item.checked=false
+          return item
+        }))
+        this.checkAllLeft=false
+          this.arrleft=leftRemain
+      },
+        moveTop(){
+          const left=this.arrRight.filter(item=>item.checked)
+          const rightRemain=this.arrRight.filter(item=>!item.checked)
+          this.arrleft.push(...left.map(item=>{
+            item.checked=false
+            return item
+          }))
+          this.checkAllRight=false
+          this.arrRight=rightRemain
+          }
+    },
+    computed:{
+      topState(){
+        if(this.arrleft.find(item=>item.checked)){
+            return false
+        }else {
+          return true
+        }
+      },
+      bottomState(){
+        if(this.arrRight.find(item=>item.checked)){
+            return false
+        }else {
+          return true
+        }
+      }
+    },
+    watch:{
+      checkAllLeft(val){
+        this.arrleft.forEach((item)=>{
+          return item.checked=val
+        })
+      },
+      checkAllRight(val){
+        this.arrRight.forEach((item)=>{
+          return item.checked=val
+        })
+      }
+    }
+	})
+  new Vue({
+    el:'#app',
+    template:`
+    <transfer :leftList='leftList' :rightList='rightList'/>
+    `,
+    data:{
+        arr1: {
+            name: 'xx',
+            title: 'xx'
+        },
+        leftList: [
+            {
+                checked: false,
+                title: '左一'
+            },
+            {
+                checked: false,
+                title: '左二'
+            },
+            {
+                checked: false,
+                title: '左三'
+            },
+            {
+                checked: false,
+                title: '左四'
+            }
+        ],
+        rightList: [
+        {
+                checked: false,
+                title: '右一'
+            },
+            {
+                checked: false,
+                title: '右二'
+            },
+            {
+                checked: false,
+                title: '右三'
+            },
+            {
+                checked: false,
+                title: '右四'
+            }
+        ]
+    }
+  })
+</script>
+</body>
+</html>

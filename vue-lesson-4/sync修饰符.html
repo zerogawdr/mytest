@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"> </div>
+
+    <script>
+    Vue.component('Test',{
+        props:{
+            test:null,
+            value:null
+        },
+        template:`
+            <div class="test">
+                <input  v-model="iTest" />
+                <input  v-model="ivalue" />
+            </div>
+            `,
+        data(){
+            return{
+                iTest:this.test,
+                ivalue:this.value
+            }
+        },
+        watch: {
+            test(val){
+                this.iTest=val
+            },
+            value(val){
+                this.ivalue=val
+            },
+            iTest(val){
+                this.$emit('update:test',val)
+            },
+            ivalue(val){
+                this.$emit('input',val)
+            }
+        },
+    })
+
+    new Vue({
+        el:"#app",
+        data() {
+            return {
+                test:100,
+            }
+        },
+        template:`
+            <div id="app">
+                <Test :test.sync="test"  v-model="value"/>
+                <input type="text" v-model="test"  />
+                <input type="text"  v-model="value" />
+            </div>
+        `,
+        data:{
+           
+                test:100,
+                value:20
+            
+        }
+    })
+    </script>
+</body>
+</html>
