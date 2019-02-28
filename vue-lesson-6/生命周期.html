@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div>xxx</div>
+    </div>
+
+    <script>
+        new Vue({
+            el:"#app",
+            beforeCreate() {
+                //马上要进入  组件在创建前执行的钩子（回调）
+            },
+            created() {
+                //快要进入了 组件创建好了
+            },
+            beforeMount() {
+                //Mount开始的时候 准备把组件挂载再dom中
+            },
+            mounted() {
+                //Mount结束了 已经吧组件挂载再dom中
+            },
+            beforeUpdate() {
+                //Update开始了 //当组件里有数据更新时（必须和模板有关联的数据）在更新模板之前
+            },
+            updated() {
+                //updated结束了 //在更新模板 之后
+            },
+            beforeDestroy() {
+                //destroyed开始 //在销毁组件之前
+            },
+            destroyed() {
+                //destroyed结束 销毁组件之后
+            },
+        })
+    </script>
+</body>
+</html>
