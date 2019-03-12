@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <style>
+        .star{
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: red;
+            transform:translate()
+        }
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+
+        <input @click='move=!move' type="button" value="点击">
+        <transition
+            @befor-enter='beforeEnter'
+            @enter='enter'
+            @after-enter='afterEnter'
+        >
+                <div v-if='move' class="star"></div>
+        </transition>
+    </div>
+
+    <script>
+        new Vue({
+            el:'#app',
+            data() {
+                return {
+                    move:false
+                }
+            },
+            methods: {
+                beforeEnter(el){
+                   
+                    el.style.transform='translate(0,0)'
+                },
+                enter(el,done){
+                    el.offsetLeft
+                    el.style.transform='translate(100px,400px)'
+                    el.style.transition='all 1s ease'
+                    done()
+                },
+                afterEnter(el){
+                    this.move=!this.move
+                }
+            },
+        })
+    </script>
+</body>
+</html>

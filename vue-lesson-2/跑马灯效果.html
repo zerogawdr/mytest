@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <button @click='start'>开启</button>
+        <button @click='titleStop'>停止</button><br>
+        <span @mouseenter='start' @mouseleave="titleStop">{{title}}</span>
+    </div>
+
+    <script>
+        new Vue({
+            el:'#app',
+            data() {
+                return {
+                    title:'猥琐发育别浪~~！！',
+                    timer:null
+                }
+            },
+            methods: {
+                start(){
+                   if(this.timer!=null) return
+                   this.timer=setInterval(() => {
+                        const firstTitle=this.title.substring(0,1);
+                        const endTitle=this.title.substring(1);
+                         this.title= endTitle+ firstTitle  
+                    }, 400);           
+                },
+                titleStop(){
+                    clearInterval( this.timer)
+                    this.timer=null
+                }
+            },
+        })
+    </script>
+</body>
+</html>

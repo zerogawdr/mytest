@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <script src="./vue-resource.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        
+    </style>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        
+        <div class="panel panel-primary">
+              <div class="panel-heading">
+                    <h3 class="panel-title">添加品牌</h3>
+              </div>
+              <div class="panel-body form-inline">
+                    <label >
+                        Name:
+                        <input v-focus @keyup.enter='add' type="text" v-model='name' class="form-control">
+                    </label>
+                    <input  @click='add' type="button" value="添加" class="btn btn-danger">
+                    <span class="bg-danger">{{Msg}}</span>
+
+                    <!-- <label >
+                        <input type="text"  v-model='serach'  class="form-control " placeholder="搜索">
+                    </label> -->
+              </div>
+        </div>
+        
+        <table class="table table-bordered table-hover table-striped">
+       
+                <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th>Name</th>
+                            <th>Ctime</th>
+                            <th>Operation</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+   
+                        <tr  v-for="item in list" :key='item.id'>
+                            <td>{{item.id}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.ctime|dateFormat}}</td>
+                            <td><a  @click.prevent='del(item.id)' href="">删除</a></td>
+                        </tr>
+         
+      
+                    </tbody>
+                </table>
+     
+        
+    </div>
+    <script >
+            Vue.filter('dateFormat',function(msg,pattern){
+            var dt=new Date(msg)
+            var y=dt.getFullYear()
+            var m=dt.getMonth()+1
+            var d=dt.getDate()
+            var h=dt.getHours().toString().padStart(2,'0')
+            var f=dt.getMinutes().toString().padStart(2,'0')
+            var ss=dt.getSeconds().toString().padStart(2,'0')
+
+            // return y+'-'+m+'-'+d
+            // return `${y}年${m}月${d}日${h}时${f}分`
+            if(pattern&&pattern.toLowerCase()==='yyyy-mm-dd'){
+                return `${y}年${m}月${d}日 `
+            }else{
+                return `${y}年${m}月${d}日${h}时${f}分${ss}秒`
+            }
+        })
+
+        Vue.http.options.root='http://kerys.pythonanywhere.com';
+        //设置htto的根路径，后面发起请求就不用写了，如果我们通过全局配置了，请求的数据结构根域名免责在每次单独发起http请求的
+        //的时候请求的url路径，应该以相对路径开头，前面不能带'/'，否则不会启用跟路径做拼接
+        // Vue.http.options.emulateJSON=true;
+        //全局启用emulateJSON选项，这里写了全局下面用post请求就不用在选项里再写了，表单提交最好启用一下
+        Vue.directive('focus',{
+
+                inserted(el,binding,vnode,oldnode){//inserted 标识元素插入到dom中的时候，会执行inserted函数
+                    el.focus()
+                },
+
+            })
+        new Vue({
+            el:'#app',
+            data() {
+                return {
+                    name:'',
+                    list:[
+                        // {id:1,name:'五菱宏光',ctime:new Date()},
+                        // {id:2,name:'众泰',ctime:new Date()},
+                    ],
+                    Msg:'',
+                    // serach:'',
+                    // has:true
+                }
+            },
+            methods: {
+                add(){
+                    this.$http.post('api/addprod/',{name:this.name},{emulateJSON:true})
+                        .then(result=>{
+                            console.log(result)
+                            var result=result.body;
+                            if(result.status=='failed'){
+                                this.Msg=result.message
+                            }else if(result.status=='success'){
+                                // alert(result.message);
+                                this. getAllList()
+                                this.name='';
+                                this.Msg='';
+                            }
+                            
+                        })
+                },
+                getAllList(){
+                    this.$http.get('api/getprodlist/')
+                    .then(result=>{
+                        if(result.status==200){//判断状态码是否成功
+                            this.list=result.body.message
+                        }else{
+                            alert('从远程获取数据失败')
+                        }
+                    })
+                },
+                del(id){
+                    this.$http.get("api/delprod/"+id)
+                    .then(result=>{
+                        // console.log(result)
+                        var result=result.body
+                        if(result.status=="success"){
+                            alert(result.message)
+                            this. getAllList()
+                        }else{
+                            alert(resultmessage)
+                        }
+                    })
+                }
+                
+            },
+            created() {
+                this.getAllList()
+            },
+         
+        })
+    </script>
+</body>
+</html>

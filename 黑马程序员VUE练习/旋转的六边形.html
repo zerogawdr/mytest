@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #boxs{
+            width: 50px;
+            height: 60px;
+            transform: rotate(0deg);
+            animation: trans 2s infinite linear;
+            position: absolute;
+            top:0;
+            left: 0;
+            display: none;
+
+        }
+        @keyframes trans {
+            0% {
+                transform: rotate(0deg);
+                opacity: 0;
+            }
+            100%{
+                transform: rotate(360deg);
+                opacity: 1;
+                /* display: none; */
+                
+            }
+        }
+        #box1{
+            width: 0;
+            border-left: 26px solid transparent;
+            border-right: 26px solid transparent;
+            border-bottom: 15px solid #66cc66;
+        }
+        #box2{
+            width: 52px;
+            height: 30px;
+            background-color: #66cc66
+        }
+        #box3{
+            width: 0;
+            border-top: 15px solid #66cc66;
+            border-left: 26px solid transparent;
+            border-right: 26px solid transparent;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="boxs">
+        <div id="box1"></div>
+        <div id="box2"></div>
+        <div id="box3"></div>
+    </div>
+    <script>
+
+            // window.onload=function(){
+                var oBox=document.getElementById('boxs')
+                document.onclick=function(e){
+                    console.log(e)
+                    var w=e.clientX;
+                    var h=e.clientY;
+                    var _w=oBox.offsetWidth/2;
+                    var _h=oBox.offsetHeight/2;
+                    var nowW=w-(_w)
+                    var nowH=h-(_h)
+                    console.log(nowW)
+                    // console.log(_w,_h)
+                    // console.dir(oBox)
+                    oBox.style.left=nowW+'px';
+                    oBox.style.top=nowH+'px';
+                    oBox.style.display="block"
+
+
+                }
+            // }
+
+    </script>
+</body>
+</html>

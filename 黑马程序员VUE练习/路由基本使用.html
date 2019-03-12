@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <script src="./node_modules/vue-router/dist/vue-router.js"></script>
+    <title>Document</title>
+    <style>
+        .router-link-active{
+            color: red;
+            font-weight: 800;
+            /* font-style: italic; */
+            font-size: 20px;
+            text-decoration: underline;
+            background: green
+        }
+        .v-enter,
+        .v-leave-to{
+            opacity: 0;
+            transform: translateX(140px)
+        }
+        .v-enter-active,
+        .v-leave-active{
+            transition:all  0.3s ease
+        }
+
+    </style>
+</head>
+<body>
+        <div id="app">
+
+            <!-- <a href="#/login">登录</a>
+            <a href="#/register">注册</a> -->
+                <router-link to='/login' tag="span" >登录</router-link>
+                <router-link to='/register'>注册</router-link>
+                <transition mode='out-in'>
+                        <router-view></router-view>
+                </transition>
+        </div>
+        <script>
+
+
+            var login={
+                template:`<h1>登录组件</h1>`
+            }
+
+           Vue.component("login",{
+               template:`<h1>登录组件</h1>`
+           })
+           var register={
+                template:`<h1>注册组件</h1>`
+            }
+
+           Vue.component("register",{
+               template:`<h1>注册组件</h1>`
+           })
+            var routerObj=new VueRouter({
+                // route //标识路由匹配规则
+
+                routes:[
+                    //路由匹配规则
+                    {path:'/',redirect:'/login'},
+                    {
+                        path:'/login',component:login
+                    },
+                    {
+                        path:'/register',component:register
+                    }
+                ],
+                //linkActiveClass:'myactive'可以自定义需要的router-link激活状态的类名
+            })
+            var vm=new Vue({
+                el:'#app',
+                router:routerObj
+            })
+        </script>
+</body>
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <cmt-box @func='loadComments'></cmt-box>
+        <ul class="list-group"> 
+            <li  @click='del(index)' class="list-group-item" v-for='(item,index) in list' >
+                <span class="badge">评论人：{{item.user}}</span>
+                {{item.content}}
+            </li>
+           
+        </ul>
+        
+    </div>
+
+    <template id="tmp1">
+        <div>
+            <div class="form-group">
+                <label for="">评论人</label>
+                <input type="text" class="form-control" v-model='user'>
+            </div>
+            <div class="form-group">
+                    <label for="">评论内容：</label>
+                    <textarea v-model='content' class="form-control" style="resize: none" cols="30" rows="10"></textarea>
+            </div>
+            <div class="form-group">
+
+                <input @click='postComment' type="button" value="发表评论" class="btn btn-primary">
+            </div>
+
+        </div>
+    </template>
+    <script>
+        var commentBox={
+            template:'#tmp1',
+            data() {
+                return {
+                    user:'',
+                    content:''
+                }
+            },
+            methods: {
+                postComment(){
+                    var comment={id:Date().now,user:this.user,content:this.content};
+                    var list=JSON.parse(localStorage.getItem('cmts') || '[]')
+                    list.unshift(comment)
+                    localStorage.setItem('cmts',JSON.stringify(list))
+                    this.user=this.content=''
+                    this.$emit('func')
+                },
+            },
+            beforeCreate() {
+                
+            },
+        }
+        var vm=new Vue({
+            el:'#app',
+            data() {
+                return {
+                    list:[
+                        {id:Date.now(),user:'礼李白',content:'天上人间'},
+                        {id:Date.now(),user:'杜甫',content:'乌拉丫丫'},
+                        {id:Date.now(),user:'朋四局',content:'Yo~~'},
+                        {id:Date.now(),user:'张成浩',content:'fuck it！'},
+                    ]
+                }
+            },
+            methods: {
+                loadComments(){
+                    var list=JSON.parse(localStorage.getItem('cmts') || '[]')
+                    this.list=list
+                },
+                del(index){//通过传递过来的下标输出本地存储的对应数据
+                    var lists=JSON.parse(localStorage.getItem('cmts') || '[]')  //把本地存储的数据储存到lists
+                    var newMsg=JSON.parse(JSON.stringify(lists)) //通过深拷贝转换成新的数组和原数组一样
+                    newMsg.splice(index,1) //通过索引删除对应的数据
+                    localStorage.removeItem('cmts')//把本地存储的数据cmts里的数据清空
+                    localStorage.setItem('cmts',JSON.stringify(newMsg))//把通过深拷贝转换好的数据存储到本地存储里
+                    this.loadComments() //调用loadComments方法吧新的本地存储数据渲染到页面
+
+                }
+             
+            },
+            components:{
+                'cmt-box':commentBox,
+            },
+            created() {
+               this.loadComments()
+            },
+        })
+
+        
+    </script>
+</body>
+</html>

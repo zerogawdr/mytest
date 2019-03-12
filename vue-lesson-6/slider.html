@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <title>Document</title>
+
+    <style>
+        .slider{
+            width: 800px;
+            height:10px ;
+            background:#ccc;
+            position: relative;
+            border-radius: 5px;
+            /* overflow: hidden; */
+        }
+        .slider .progress{
+            height: inherit;
+            width: 0%;
+            background: red;
+            position: relative;
+            border-radius: 5px;
+        }
+        .slider .btn1{
+            width: 16px;
+            height: 16px;
+            border-radius: 10px;
+            border: 2px solid orangered;
+            position:absolute;
+            top:-5px;
+            background: orangered;
+            right: -10px;
+            
+        }
+        .slider .loading{
+            width: inherit;
+            height: 20px;
+            line-height: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+
+
+    </div>
+
+    <script>
+
+        Vue.component('Slider',{
+            template:`
+                <div class="slider">
+                    <div :style="{width:value+'%'}" class="progress">
+                            <div @mousedown.left.stop="mousedown" class="btn1"></div>
+                    </div>
+                    <div  class="loading">{{value+"%"}}</div>
+                </div>
+            `,
+            mounted() {
+                
+            },
+            data() {
+                return {
+                    value:0
+                }
+            },
+            watch: {
+                value(val){
+                    this.value=Math.floor(val);
+                    if(val>100) this.value=100;
+                    if(val<0) this.value=0;
+                }
+            },
+            methods: {
+                mousedown(){
+                    const offsetLeft=this.$el.offsetLeft;
+                    const w=this.$el.clientWidth;
+                    // console.log(offsetLeft)
+
+                    const move=(e)=>{
+                        // console.log(e)
+                        const x=e.clientX;
+                        this.value=(x-offsetLeft)/w*100
+                        
+                    }
+                    const up=(e)=>{
+                        document.removeEventListener('mousemove',move)
+                        document.removeEventListener('mouseup',up)
+                    }
+                    document.addEventListener('mousemove',move)
+                    document.addEventListener('mouseup',up)
+                }
+            },
+        })
+        new Vue({
+            el:"#app",
+            template:`
+            
+                <Slider/>
+            `
+        })
+    </script>
+</body>
+</html>

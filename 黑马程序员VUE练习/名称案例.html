@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <!-- <input type="text" v-model='firstName' @keyup='getFullname' >+
+        <input type="text" v-model='lasttName' @keyup='getFullname'>=
+        <input type="text" v-model='fullName ' > -->
+        <input type="text" v-model='firstName'  >+
+        <input type="text" v-model='lasttName' >=
+        <input type="text" v-model='fullName ' >
+
+    </div>
+
+
+    <script>
+            var vm=new Vue({
+                el:"#app",
+                data() {
+                    return {
+                        firstName:'',
+                        lasttName:'',
+                        fullName:''
+                    }
+                },
+                methods: {
+                    getFullname(){
+                        this.fullName=this.firstName+'-'+this.lasttName
+                    }
+                },
+                watch: {
+                    firstName(val){
+                        // console.log(val)
+                        // this.fullName=this.firstName+'-'+this.lasttName
+                        this.fullName=val+'-'+this.lasttName
+                    },
+                    lasttName(val){
+                        this.fullName=this.firstName+'-'+val
+                    }
+                },
+            })
+    </script>
+</body>
+</html>

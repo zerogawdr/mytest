@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://cdn.bootcss.com/vue/2.6.4/vue.js"></script>
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        <div class='panel panel-primary'>
+            <div class="panel-heading">
+                <h3>添加品牌</h3>
+            </div>
+            <div class="panel-body form-inline" >
+                <label for="">
+                    id:
+                    <input type="text" class="form-control" v-model="id">
+                </label>
+                <label for="">
+                        name:
+                        <input @keyup.enter='add' type="text" class="form-control" v-model='name'>
+                </label>
+                <input @click="add" type="button" value="添加" class="btn btn-primary">
+                <label   for="">
+                       搜索名称关键字：
+                        <input v-focus v-color type="text" class="form-control" v-model="keywords">
+                    </label>
+            </div>
+        </div>
+        <table class="table table-bordered table-hover table-striped"> 
+            <thead>
+                <tr >
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Ctime</th>
+                    <th>Cperation</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for='item in search(keywords)' :key='item.id'>
+                    <td>{{item.id}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.ctime|dateFormat()}}</td>
+                    <td>
+                        <a @click.prevent='del(item.id)' href="#"> 删除</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script>
+    //padStart() ES6新方法 可以对时间进行补零 从前面补
+    //padEnd 从后补
+        Vue.filter('dateFormat',function(msg,pattern){
+            var dt=new Date(msg)
+            var y=dt.getFullYear()
+            var m=dt.getMonth()+1
+            var d=dt.getDate()
+            var h=dt.getHours().toString().padStart(2,'0')
+            var f=dt.getMinutes().toString().padStart(2,'0')
+            var ss=dt.getSeconds().toString().padStart(2,'0')
+
+            // return y+'-'+m+'-'+d
+            // return `${y}年${m}月${d}日${h}时${f}分`
+            if(pattern&&pattern.toLowerCase()==='yyyy-mm-dd'){
+                return `${y}年${m}月${d}日 `
+            }else{
+                return `${y}年${m}月${d}日${h}时${f}分${ss}秒`
+            }
+        })
+        //自定义指令
+            Vue.directive('focus',{
+                bind(el,binding,vnode,oldnode){//只执行一次，每当指令绑定到元素上的时候，会立即执行这个bind函数，
+                //注意，在每个函数中 第一个参数永远都是el，标识被绑定的指令的那个元素
+                    
+                },
+                inserted(el,binding,vnode,oldnode){//inserted 标识元素插入到dom中的时候，会执行inserted函数
+                    el.focus()
+                },
+                updated(el,binding,vnode,oldnode){//当vnode更新的时候，会执行update，会触发多次
+                   
+                }
+            })
+            Vue.directive('color',{
+                bind(el){
+                    el.style.color='red'
+                }
+            })
+    new Vue({
+        el:'#app',
+        data() {
+            return {
+                id:'',
+                name:'',
+                keywords:'',
+                list:[
+                    {id:1,name:'奔驰',ctime:new Date()},
+                    {id:2,name:'宝马',ctime:new Date()},
+                ]
+            }
+        },
+        methods: {
+            add(){
+              
+                    if(this.name!=''&this.id!=''){
+                        const car={id:this.id,name:this.name,ctime:new Date()}
+                        this.list.push(car)
+                        this.id=this.name=''
+                        }else{
+                            alert('输入值为空')
+                        }
+              
+            },
+            del(c){
+                this.list.some((item,i)=>{
+                    console.log(item,i)
+                    if(item.id == c){
+                        this.list.splice(i,1)
+                        return true
+                    }
+                })
+            },
+            search(keywords){
+                // var newList=[]
+                // this.list.forEach(item=>{
+                //     if(item.name.indexOf(keywords)!= -1 ){
+                //         newList.push(item)
+                //     }
+                // })
+                // return newList
+                return this.list.filter(item=>{
+                    if(item.name.includes(keywords)){
+                        return item
+                    }
+                })
+            }
+        },
+    })
+    </script>
+</body>
+</html>

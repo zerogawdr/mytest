@@ -1,0 +1,24 @@
+通过npm install -g @vue/cli可以全局安装一个3.0版本的vue，如果之前安装的2.0会升级
+
+vue --h查看对应的一些命令 vue -V查看版本号
+
+create 创建一个新的项目
+
+add 在项目当中添加插件
+
+invoke 在创建的项目中安装插件
+
+inspect 检查对应的一些配置
+
+serve 开发环境 npm run serve 开发环境运行
+
+build 打包
+
+ui 打开vue-cli的ui
+
+init 生成一个项目
+
+
+创建
+vue create XX（项目名称）
+
